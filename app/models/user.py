@@ -10,7 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from .abstract import AbstractModel
 
 
-class UserRole(enum.Enum):
+class UserRole(str, enum.Enum):
     admin = "admin"
     user = "user"
 
@@ -25,7 +25,7 @@ class User(AbstractModel):
     patronymic: Mapped[str] = mapped_column("patronymic", String(), nullable=False, index=False)
     subdivision: Mapped[str] = mapped_column("subdivision", String(), nullable=False, index=True)
     position: Mapped[str] = mapped_column("position", String(), nullable=False, index=True)
-    role: Mapped[UserRole] = mapped_column("role", Enum(UserRole), nullable=False, index=True)
+    role: Mapped[UserRole] = mapped_column("role", String(), nullable=False, index=True)
     is_active: Mapped[bool] = mapped_column("is_active", Boolean(), nullable=False, default=False)
 
     @classmethod
