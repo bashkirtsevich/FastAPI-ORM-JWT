@@ -4,6 +4,9 @@ from jose import jwt
 
 from app.settings import settings
 
+TOKEN_TYPE_ACCESS = "access"
+TOKEN_TYPE_REFRESH = "refresh"
+
 
 def create_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -30,7 +33,7 @@ def create_user_auth_tokens(user_id: int) -> dict:
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_TIME)
     refresh_token_expires = timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_TIME)
 
-    access_token = create_token({**payload, "token_type": "access"}, access_token_expires)
-    refresh_token = create_token({**payload, "token_type": "refresh"}, refresh_token_expires)
+    access_token = create_token({**payload, "token_type": TOKEN_TYPE_ACCESS}, access_token_expires)
+    refresh_token = create_token({**payload, "token_type": TOKEN_TYPE_REFRESH}, refresh_token_expires)
 
     return {"access": access_token, "refresh": refresh_token}
