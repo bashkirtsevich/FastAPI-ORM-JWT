@@ -20,12 +20,12 @@ class User(AbstractModel):
 
     email: Mapped[str] = mapped_column("email", String(), nullable=False, unique=True, index=True)
     password_hash: Mapped[str] = mapped_column("password_hash", String())
-    first_name: Mapped[str] = mapped_column("first_name", String(), nullable=False, unique=True, index=False)
-    last_name: Mapped[str] = mapped_column("last_name", String(), nullable=False, unique=True, index=False)
-    patronymic: Mapped[str] = mapped_column("patronymic", String(), nullable=False, unique=True, index=False)
-    subdivision: Mapped[str] = mapped_column("subdivision", String(), nullable=False, unique=True, index=True)
-    position: Mapped[str] = mapped_column("position", String(), nullable=False, unique=True, index=True)
-    role: Mapped[UserRole] = mapped_column("role", Enum(UserRole), nullable=False, unique=True, index=True)
+    first_name: Mapped[str] = mapped_column("first_name", String(), nullable=False, index=False)
+    last_name: Mapped[str] = mapped_column("last_name", String(), nullable=False, index=False)
+    patronymic: Mapped[str] = mapped_column("patronymic", String(), nullable=False, index=False)
+    subdivision: Mapped[str] = mapped_column("subdivision", String(), nullable=False, index=True)
+    position: Mapped[str] = mapped_column("position", String(), nullable=False, index=True)
+    role: Mapped[UserRole] = mapped_column("role", Enum(UserRole), nullable=False, index=True)
     is_active: Mapped[bool] = mapped_column("is_active", Boolean(), nullable=False, default=False)
 
     @classmethod
