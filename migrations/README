@@ -1,0 +1,14 @@
+Generic single-database configuration.
+
+
+Set env
+export DB_URI="postgresql+asyncpg://user:pass@127.0.0.1:5432/base"
+
+Init
+alembic init migrations
+
+Add revision
+alembic revision --autogenerate -m "Added table"
+
+Upgrade database
+alembic upgrade head
