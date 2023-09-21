@@ -1,8 +1,8 @@
-"""Added user table
+"""Tables initial
 
-Revision ID: 2c0b2b6d7421
+Revision ID: 7d74d0bc23db
 Revises: 
-Create Date: 2023-09-21 17:26:15.639842
+Create Date: 2023-09-21 18:03:40.454024
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '2c0b2b6d7421'
+revision: str = '7d74d0bc23db'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -32,15 +32,12 @@ def upgrade() -> None:
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('first_name'),
-    sa.UniqueConstraint('id'),
-    sa.UniqueConstraint('last_name'),
-    sa.UniqueConstraint('patronymic')
+    sa.UniqueConstraint('id')
     )
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
-    op.create_index(op.f('ix_user_position'), 'user', ['position'], unique=True)
-    op.create_index(op.f('ix_user_role'), 'user', ['role'], unique=True)
-    op.create_index(op.f('ix_user_subdivision'), 'user', ['subdivision'], unique=True)
+    op.create_index(op.f('ix_user_position'), 'user', ['position'], unique=False)
+    op.create_index(op.f('ix_user_role'), 'user', ['role'], unique=False)
+    op.create_index(op.f('ix_user_subdivision'), 'user', ['subdivision'], unique=False)
     # ### end Alembic commands ###
 
 
