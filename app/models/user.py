@@ -1,12 +1,18 @@
 from __future__ import annotations
 
+import enum
 from typing import AsyncIterator
 
-from sqlalchemy import String, select, Boolean
+from sqlalchemy import String, select, Boolean, Enum
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .abstract import AbstractModel
+
+
+class UserRole(enum.Enum):
+    admin = "admin"
+    user = "user"
 
 
 class User(AbstractModel):
@@ -19,22 +25,16 @@ class User(AbstractModel):
     patronymic: Mapped[str] = mapped_column("patronymic", String(), nullable=False, unique=True, index=False)
     subdivision: Mapped[str] = mapped_column("subdivision", String(), nullable=False, unique=True, index=True)
     position: Mapped[str] = mapped_column("position", String(), nullable=False, unique=True, index=True)
-    role: Mapped[str] = mapped_column("role", String(), nullable=False, unique=True, index=True)
+    role: Mapped[UserRole] = mapped_column("role", Enum(UserRole), nullable=False, unique=True, index=True)
     is_active: Mapped[bool] = mapped_column("is_active", Boolean(), nullable=False, default=False)
 
     @classmethod
     async def read_all(cls, session: AsyncSession) -> AsyncIterator[User]:
-        query = select(cls)
-
-        stream = await session.stream_scalars(query.order_by(cls.id))
-        async for row in stream:
-            yield row
+        return cls._list(session)
 
     @classmethod
     async def read_by_id(cls, session: AsyncSession, user_id: int) -> User | None:
-        query = select(cls).where(cls.id == user_id)
-
-        return await session.scalar(query.order_by(cls.id))
+        return await cls._get(session, user_id)
 
     @classmethod
     async def read_by_email(cls, session: AsyncSession, email: str) -> User | None:
@@ -60,5 +60,4 @@ class User(AbstractModel):
 
     @classmethod
     async def delete(cls, session: AsyncSession, user: User) -> None:
-        await session.delete(user)
-        await session.flush()
+        return await cls._delete(session, user)
